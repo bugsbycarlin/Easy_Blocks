@@ -107,6 +107,35 @@ class GameScreen extends PIXI.Container {
     this.addChild(this.hey);
     this.hey.visible = false;
 
+    
+    let k1 = new PIXI.Text("A", {fontFamily: default_font, fontSize: 35, fill: 0xFFFFFF, letterSpacing: 8, align: "center"});
+    k1.position.set(360 + 10, 30 + 40);
+    let k2 = new PIXI.Text("S", {fontFamily: default_font, fontSize: 35, fill: 0xFFFFFF, letterSpacing: 8, align: "center"});
+    k2.position.set(360 + 50, 30 + 40);
+    let k3 = new PIXI.Text("D", {fontFamily: default_font, fontSize: 35, fill: 0xFFFFFF, letterSpacing: 8, align: "center"});
+    k3.position.set(360 + 90, 30 + 40);
+    let k4 = new PIXI.Text("W", {fontFamily: default_font, fontSize: 35, fill: 0xFFFFFF, letterSpacing: 8, align: "center"});
+    k4.position.set(360 + 50, 30);
+
+    let k5 = new PIXI.Text("Lf", {fontFamily: default_font, fontSize: 35, fill: 0xFFFFFF, letterSpacing: 8, align: "center"});
+    k5.position.set(360 + 560 + 40, 30 + 40);
+    let k6 = new PIXI.Text("Dn", {fontFamily: default_font, fontSize: 35, fill: 0xFFFFFF, letterSpacing: 8, align: "center"});
+    k6.position.set(360 + 560 + 80, 30 + 40);
+    let k7 = new PIXI.Text("Rt", {fontFamily: default_font, fontSize: 35, fill: 0xFFFFFF, letterSpacing: 8, align: "center"});
+    k7.position.set(360 + 560 + 120, 30 + 40);
+    let k8 = new PIXI.Text("Up", {fontFamily: default_font, fontSize: 35, fill: 0xFFFFFF, letterSpacing: 8, align: "center"});
+    k8.position.set(360 + 560 + 80, 30);
+    
+    this.key_markers = [k1, k2, k3, k4, k5, k6, k7, k8];
+    for (let i = 0; i < this.key_markers.length; i++) {
+        let k = this.key_markers[i];
+        k.alpha = 0.3;
+        k.visible = false;
+        k.status = "alive";
+        this.addChild(k);
+    }
+
+
     this.dance_guy_1 = makeAnimatedSprite("Art/dance.json", "dance");
     this.dance_guy_1.anchor.set(0.5, 0.75);
     this.dance_guy_1.position.set(game.width / 2 - 200, game.height / 2 - 150);
@@ -694,40 +723,56 @@ class GameScreen extends PIXI.Container {
     if (this.mode === "active") {
         if (this.left_drop != null) {
             if (key.toLowerCase() === "a") {
+                this.key_markers[0].status = "dead";
+                this.key_markers[0].visible = false;
                 this.moveLeft(this.left_drop);
             }
 
             if (key.toLowerCase() === "d") {
+                this.key_markers[2].status = "dead";
+                this.key_markers[2].visible = false;
                 this.moveRight(this.left_drop);
             }
 
             if (key.toLowerCase() === "s") {
+                this.key_markers[1].status = "dead";
+                this.key_markers[1].visible = false;
                 soundEffect("move");
                 this.dropDrop(this.left_drop);
                 if (this.left_drop.state == "uncool") this.left_drop = null;
             }
 
             if (key === " " || key.toLowerCase() === "w") {
+                this.key_markers[3].status = "dead";
+                this.key_markers[3].visible = false;
                 this.rotate(this.left_drop);
             }
         }
 
         if (this.right_drop != null) {
             if (key === "ArrowLeft") {
+                this.key_markers[4].status = "dead";
+                this.key_markers[4].visible = false;
                 this.moveLeft(this.right_drop);
             }
 
             if (key === "ArrowRight") {
+                this.key_markers[6].status = "dead";
+                this.key_markers[6].visible = false;
                 this.moveRight(this.right_drop);
             }
 
             if (key === "ArrowDown") {
+                this.key_markers[5].status = "dead";
+                this.key_markers[5].visible = false;
                 soundEffect("move");
                 this.dropDrop(this.right_drop);
                 if (this.right_drop.state == "uncool") this.right_drop = null;
             }
 
             if (key === "Enter" || key === "ArrowUp") {
+                this.key_markers[7].status = "dead";
+                this.key_markers[7].visible = false;
                 this.rotate(this.right_drop);
             }
         }
@@ -759,6 +804,13 @@ class GameScreen extends PIXI.Container {
         this.hey.visible = false;
         this.removeChild(this.dance_guy_1);
         this.removeChild(this.dance_guy_2);
+
+        for (let i = 0; i < 8; i++) {
+            let key_marker = this.key_markers[i];
+            if (key_marker.status == "alive") {
+                key_marker.visible = true;
+            }
+        }
     }
 
     if (this.mode === "active" && game.timeSince(this.start_time) > 3200 + 225.55 * this.step) {
@@ -783,7 +835,7 @@ class GameScreen extends PIXI.Container {
         }
 
         if (this.tiles.length < 4 && dice(100) < 20) {
-            //this.addTile();
+            this.addTile();
         }
 
         let new_tiles = [];
