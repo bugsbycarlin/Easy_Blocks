@@ -94,6 +94,9 @@ class GameScreen extends PIXI.Container {
     this.left_drop = null;
     this.right_drop = null;
 
+    this.score = 0;
+    this.display_score = 0;
+
     this.tiles = [];
   }
 
@@ -107,24 +110,37 @@ class GameScreen extends PIXI.Container {
     this.addChild(this.hey);
     this.hey.visible = false;
 
-    
-    let k1 = new PIXI.Text("A", {fontFamily: default_font, fontSize: 35, fill: 0xFFFFFF, letterSpacing: 8, align: "center"});
-    k1.position.set(360 + 10, 30 + 40);
-    let k2 = new PIXI.Text("S", {fontFamily: default_font, fontSize: 35, fill: 0xFFFFFF, letterSpacing: 8, align: "center"});
-    k2.position.set(360 + 50, 30 + 40);
-    let k3 = new PIXI.Text("D", {fontFamily: default_font, fontSize: 35, fill: 0xFFFFFF, letterSpacing: 8, align: "center"});
-    k3.position.set(360 + 90, 30 + 40);
-    let k4 = new PIXI.Text("W", {fontFamily: default_font, fontSize: 35, fill: 0xFFFFFF, letterSpacing: 8, align: "center"});
-    k4.position.set(360 + 50, 30);
+    this.score_text = new PIXI.Text("0", {fontFamily: default_font, fontSize: 70, fill: 0x726a74, letterSpacing: 8, align: "center"});
+    this.score_text.anchor.set(1, 0.5);
+    this.score_text.position.set(1370, 205);
+    this.addChild(this.score_text);
 
-    let k5 = new PIXI.Text("Lf", {fontFamily: default_font, fontSize: 35, fill: 0xFFFFFF, letterSpacing: 8, align: "center"});
-    k5.position.set(360 + 560 + 40, 30 + 40);
-    let k6 = new PIXI.Text("Dn", {fontFamily: default_font, fontSize: 35, fill: 0xFFFFFF, letterSpacing: 8, align: "center"});
-    k6.position.set(360 + 560 + 80, 30 + 40);
-    let k7 = new PIXI.Text("Rt", {fontFamily: default_font, fontSize: 35, fill: 0xFFFFFF, letterSpacing: 8, align: "center"});
-    k7.position.set(360 + 560 + 120, 30 + 40);
-    let k8 = new PIXI.Text("Up", {fontFamily: default_font, fontSize: 35, fill: 0xFFFFFF, letterSpacing: 8, align: "center"});
-    k8.position.set(360 + 560 + 80, 30);
+    
+    let k1 = new PIXI.Text("A", {fontFamily: default_font, fontSize: 25, fill: 0xFFFFFF, letterSpacing: 4, align: "center"});
+    k1.position.set(200 + 20, 825 + 30);
+    let k2 = new PIXI.Text("S", {fontFamily: default_font, fontSize: 25, fill: 0xFFFFFF, letterSpacing: 4, align: "center"});
+    k2.position.set(200 + 50, 825 + 30);
+    let k3 = new PIXI.Text("D", {fontFamily: default_font, fontSize: 25, fill: 0xFFFFFF, letterSpacing: 4, align: "center"});
+    k3.position.set(200 + 80, 825 + 30);
+    let k4 = new PIXI.Text("W", {fontFamily: default_font, fontSize: 25, fill: 0xFFFFFF, letterSpacing: 4, align: "center"});
+    k4.position.set(200 + 50, 825);
+
+    let k5 = makeSprite("Art/arrow.png");
+    k5.anchor.set(0.5, 0.5);
+    k5.angle = 180;
+    k5.position.set(1100 + 55, 830 + 15);
+    let k6 = makeSprite("Art/arrow.png");
+    k6.anchor.set(0.5, 0.5);
+    k6.angle = 90;
+    k6.position.set(1100 + 80, 830 + 40);
+    let k7 = makeSprite("Art/arrow.png");
+    k7.anchor.set(0.5, 0.5);
+    k7.angle = 0;
+    k7.position.set(1100 + 105, 830 + 15);
+    let k8 = makeSprite("Art/arrow.png");
+    k8.anchor.set(0.5, 0.5);
+    k8.angle = 270;
+    k8.position.set(1100 + 80, 830 - 10);
     
     this.key_markers = [k1, k2, k3, k4, k5, k6, k7, k8];
     for (let i = 0; i < this.key_markers.length; i++) {
@@ -484,11 +500,12 @@ class GameScreen extends PIXI.Container {
 
     for (let i = 0; i < drop.list.length; i++) {
         let block = drop.list[i];
-        if (block.c_y == 1 || this.board[block.c_x][block.c_y - 1] != null) done = true;
+        if (block.c_y <= 1 || this.board[block.c_x][block.c_y - 1] != null) done = true;
     }
 
     if (done) {
         soundEffect("place");
+        this.score += 10;
         for (let i = 0; i < drop.list.length; i++) {
             let block = drop.list[i];
             this.board[block.c_x][block.c_y] = block;
@@ -568,6 +585,7 @@ class GameScreen extends PIXI.Container {
 
   checkClear() {
     let clear = false;
+    let num_clears = 0;
     for (let y = 1; y <= 24; y++) {
         let line_clear = true;
         for (let x = 0; x < 20; x++) {
@@ -577,6 +595,10 @@ class GameScreen extends PIXI.Container {
             }
         }
         if (line_clear) {
+            for (let i = 0; i < num_clears + 1; i++) {
+                this.score += 100;
+            }
+            num_clears += 1;
             clear = true;
             for (let x = 0; x < 20; x++) {
                 if (this.board[x][y] != null) {
@@ -849,6 +871,11 @@ class GameScreen extends PIXI.Container {
             }
         }
         this.tiles = new_tiles;
+    }
+
+    if (this.display_score < this.score) {
+        this.display_score += 5;
+        this.score_text.text = this.display_score;
     }
 
     game.shakeThings();
