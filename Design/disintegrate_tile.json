@@ -1,0 +1,31 @@
+{"frames": {
+
+"disintegrate_tile_1.png":
+{
+	"frame": {"x":0,"y":0,"w":36,"h":36},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":36},
+	"sourceSize": {"w":36,"h":36}
+},
+"disintegrate_tile_2.png":
+{
+	"frame": {"x":36,"y":0,"w":36,"h":36},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":36},
+	"sourceSize": {"w":36,"h":36}
+}},
+"animations": {
+	"animation": ["disintegrate_tile_1.png","disintegrate_tile_2.png"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "disintegrate_tile.png",
+	"format": "RGBA8888",
+	"size": {"w":72,"h":36},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:f40a7e62270fdc8ce374cdf6058fbc23:614963953f131dffa92d5f9bc6ec7f47:374324a5407d1746a9b4532bddb495fe$"
+}
+}

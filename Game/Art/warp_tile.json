@@ -1,0 +1,31 @@
+{"frames": {
+
+"warp_1.png":
+{
+	"frame": {"x":0,"y":0,"w":36,"h":36},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":36},
+	"sourceSize": {"w":36,"h":36}
+},
+"warp_2.png":
+{
+	"frame": {"x":36,"y":0,"w":36,"h":36},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":36},
+	"sourceSize": {"w":36,"h":36}
+}},
+"animations": {
+	"animation": ["warp_1.png","warp_2.png"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "warp_tile.png",
+	"format": "RGBA8888",
+	"size": {"w":72,"h":36},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:4ae82c94d11aed78d1918a3003e71cf0:a27df0f09c22efddf04931a655ad2104:1f90a08dfb8b2ff9b9f87797c19fab31$"
+}
+}

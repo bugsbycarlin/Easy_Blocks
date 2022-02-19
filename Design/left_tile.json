@@ -1,0 +1,31 @@
+{"frames": {
+
+"left_tile_1.png":
+{
+	"frame": {"x":0,"y":0,"w":36,"h":36},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":36},
+	"sourceSize": {"w":36,"h":36}
+},
+"left_tile_2.png":
+{
+	"frame": {"x":36,"y":0,"w":36,"h":36},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":36},
+	"sourceSize": {"w":36,"h":36}
+}},
+"animations": {
+	"animation": ["left_tile_1.png","left_tile_2.png"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "left_tile.png",
+	"format": "RGBA8888",
+	"size": {"w":72,"h":36},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:e5481674cecd689c055ac55038e7b0ad:8f40f58fafa2fb7fe91aec25306b087f:3391f7e1a89d0411d4a885deaa3e3a96$"
+}
+}
