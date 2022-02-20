@@ -22,6 +22,29 @@ var first_screen = "title";
 
 let game_fullscreen = false;
 
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAPA9qXH5olb2z86kcJt_tzbX87GgLBJ-U",
+  authDomain: "easyblocks-f5461.firebaseapp.com",
+  databaseURL: "https://easyblocks-f5461-default-rtdb.firebaseio.com",
+  projectId: "easyblocks-f5461",
+  storageBucket: "easyblocks-f5461.appspot.com",
+  messagingSenderId: "740217414900",
+  appId: "1:740217414900:web:96af11bb7ac3381ee02aa1",
+  measurementId: "G-1F18F45KC0"
+};
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+  } else {
+    // No user is signed in.
+  }
+});
+
+
 function initialize() {
   game = new Game();
   game.initialize();
@@ -140,6 +163,10 @@ class Game {
     this.renderer = pixi.renderer;
     document.getElementById("mainDiv").appendChild(pixi.view);
     pixi.renderer.resize(this.width,this.height);
+
+    this.network = new Network(this);
+    this.high_scores = {};
+    this.auth_user = null;
 
     // Set up rendering and tweening loop
     let ticker = PIXI.Ticker.shared;

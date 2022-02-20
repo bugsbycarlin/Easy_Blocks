@@ -16,6 +16,8 @@ class TitleScreen extends PIXI.Container {
 
 
   initializeScreen() {
+    let self = this;
+
     this.background = makeSprite("Art/title_board.png");
     this.background.width = 1440;
     this.background.height = 900;
@@ -38,7 +40,7 @@ class TitleScreen extends PIXI.Container {
     let text = "EASY BLOCKS";
     for (var i = 0; i < text.length; i++) {
       let letter = new PIXI.Text(text.charAt(i), {fontFamily: default_font, fontSize: 200, fill: 0xFFFFFF, letterSpacing: 8, align: "center"});
-      letter.position.set(260 + 90 * i, 150);
+      letter.position.set(260 + 90 * i, 120);
       this.maskContainer.addChild(letter);
       this.letters.push(letter);
       letter.speed = 1 + 0.2 * Math.random();
@@ -46,8 +48,8 @@ class TitleScreen extends PIXI.Container {
 
     text = "PRESS ENTER";
     for (var i = 0; i < text.length; i++) {
-      let letter = new PIXI.Text(text.charAt(i), {fontFamily: default_font, fontSize: 100, fill: 0xFFFFFF, letterSpacing: 6, align: "center"});
-      letter.position.set(440 + 50 * i, 650);
+      let letter = new PIXI.Text(text.charAt(i), {fontFamily: default_font, fontSize: 80, fill: 0xFFFFFF, letterSpacing: 6, align: "center"});
+      letter.position.set(440 + 50 * i, 690);
       this.maskContainer.addChild(letter);
       this.letters_2.push(letter);
       letter.speed = 1 + 0.2 * Math.random();
@@ -70,6 +72,30 @@ class TitleScreen extends PIXI.Container {
     this.status = "fixed";
 
     setMusic("lobby_music");
+
+    let mu = firebase.auth().currentUser;
+    if (mu != null && mu.uid != null) {
+      game.auth_user = mu;
+      game.network.uid = mu.uid;
+    }
+    if (game.network.uid == null) {
+      game.network.anonymousSignIn(function() {
+        game.network.loadHighScores(function() {
+          console.log(game.high_scores);
+          let hs_text = "High Scores\n";
+          for (const [key, value] of Object.entries(game.high_scores)) {
+            console.log(key);
+            console.log(value);
+            hs_text += value.name + ": " + value.score + "\n";
+          }
+          let hs_textbox = new PIXI.Text(hs_text, 
+            {fontFamily: default_font, fontSize: 25, fill: 0xFFFFFF, letterSpacing: 5, align: "left"});
+          hs_textbox.position.set(game.width / 2 - 100, game.height - 520);
+          hs_textbox.anchor.set(0, 0);
+          self.maskContainer.addChild(hs_textbox);
+        });
+      });
+    }
   }
 
 
@@ -159,11 +185,11 @@ class TitleScreen extends PIXI.Container {
     this.ticker += 1;
 
     for (let i = 0; i < this.letters.length; i++) {
-      this.letters[i].y = 150 + 40 * Math.sin(this.ticker / 40 * this.letters[i].speed);
+      this.letters[i].y = 120 + 40 * Math.sin(this.ticker / 40 * this.letters[i].speed);
     }
-    for (let i = 0; i < this.letters_2.length; i++) {
-      this.letters_2[i].y = 650 + 25 * Math.sin(this.ticker / 40 * this.letters_2[i].speed);
-    }
+    // for (let i = 0; i < this.letters_2.length; i++) {
+    //   this.letters_2[i].y = 690 + 25 * Math.sin(this.ticker / 40 * this.letters_2[i].speed);
+    // }
 
     this.last_texture = this.prepareTexture();
     this.maskSprite = new PIXI.Sprite(this.last_texture);
@@ -176,7 +202,6 @@ class TitleScreen extends PIXI.Container {
         this.step += 1;
 
         if (dice(100) < 25) {
-          console.log("here");
           this.drops.push(this.addDrop(dice(19), 26));
         }
 
@@ -196,7 +221,6 @@ class TitleScreen extends PIXI.Container {
           }
         }
         this.drops = new_drops;
-        console.log(this.drops.length);
     }
 
     
