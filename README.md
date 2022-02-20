@@ -1,3 +1,5 @@
+![](https://alphazoollc.com/GameJam2/icon.png)
+
 # Easy_Blocks
 Easy Blocks is an easy block game for babies
 
