@@ -49,7 +49,7 @@ class TitleScreen extends PIXI.Container {
     text = "PRESS ENTER";
     for (var i = 0; i < text.length; i++) {
       let letter = new PIXI.Text(text.charAt(i), {fontFamily: default_font, fontSize: 80, fill: 0xFFFFFF, letterSpacing: 6, align: "center"});
-      letter.position.set(440 + 50 * i, 690);
+      letter.position.set(440 + 50 * i, 710);
       this.maskContainer.addChild(letter);
       this.letters_2.push(letter);
       letter.speed = 1 + 0.2 * Math.random();
@@ -195,9 +195,9 @@ class TitleScreen extends PIXI.Container {
     for (let i = 0; i < this.letters.length; i++) {
       this.letters[i].y = 120 + 40 * Math.sin(this.ticker / 40 * this.letters[i].speed);
     }
-    // for (let i = 0; i < this.letters_2.length; i++) {
-    //   this.letters_2[i].y = 690 + 25 * Math.sin(this.ticker / 40 * this.letters_2[i].speed);
-    // }
+    for (let i = 0; i < this.letters_2.length; i++) {
+      this.letters_2[i].y = 710 + 10 * Math.sin(this.ticker / 40 * this.letters_2[i].speed);
+    }
 
     this.last_texture = this.prepareTexture();
     this.maskSprite = new PIXI.Sprite(this.last_texture);

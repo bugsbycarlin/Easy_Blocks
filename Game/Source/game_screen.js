@@ -379,6 +379,34 @@ class GameScreen extends PIXI.Container {
         this.setPosition(tile, tile_position[0], tile_position[1]);
         this.tiles.push(tile);
         this.addChild(tile);
+    } else if (legal_area.length > 1) {
+        let no_warps = true;
+        for (let i = 0; i < this.tiles.length; i++) {
+            if (this.tiles[i].type == "warp") no_warps = false;
+        }
+
+        if (no_warps) {
+            shuffleArray(legal_area);
+            let positions = [legal_area[0], legal_area[1]];
+            //let links = [legal_area[1], legal_area[0]];
+
+            for (let i = 0; i < 2; i++) {
+                let tile = makeAnimatedSprite("Art/" + tile_type + "_tile.json", "animation")
+                tile.anchor.set(0,0);
+                tile.animationSpeed = 0.0625;
+                tile.status = "alive";
+                tile.type = tile_type;
+                tile.start = game.markTime();
+                // tile.link = links[i];
+                // tile.loop = true;
+                tile.play();
+                this.setPosition(tile, positions[i][0], positions[i][1]);
+                this.tiles.push(tile);
+                this.addChild(tile);
+            }
+            this.tiles[this.tiles.length - 1].link = this.tiles[this.tiles.length - 2];
+            this.tiles[this.tiles.length - 2].link = this.tiles[this.tiles.length - 1];
+        }
     }
   }
 
@@ -388,6 +416,7 @@ class GameScreen extends PIXI.Container {
     let swap = false;
     let disintegrate = false;
     let darkness = false;
+    let warp = null;
     for (let i = 0; i < drop.list.length; i++) {
         let block = drop.list[i];
 
@@ -425,6 +454,17 @@ class GameScreen extends PIXI.Container {
                     tile.status = "dead";
                     tile.visible = false;
                     makeBlastEnergy(this, 0xFFFFFF, tile.x + 18, tile.y + 18, 1, 1);
+                }
+
+                if (tile.type == "warp") {
+                    got_one = true;
+                    tile.status = "dead";
+                    tile.visible = false;
+                    tile.link.status = "dead";
+                    tile.link.visible = false;
+                    warp = [tile.c_x - tile.link.c_x, tile.c_y - tile.link.c_y];
+                    makeBlastEnergy(this, 0xFFFFFF, tile.x + 18, tile.y + 18, 1, 1);
+                    makeBlastEnergy(this, 0xFFFFFF, tile.link.x + 18, tile.link.y + 18, 1, 1);
                 }
             }
         }
@@ -482,6 +522,18 @@ class GameScreen extends PIXI.Container {
         }, 225.55 * 4);
     }
 
+    if (warp != null) {
+        for (let i = 0; i < drop.list.length; i++) {
+            let block = drop.list[i];
+            this.setPosition(block, block.c_x - warp[0], block.c_y - warp[1]);
+        }
+        drop.c_x -= warp[0];
+        drop.c_y -= warp[1];
+        this.setPosition(drop.dot, drop.c_x, drop.c_y);
+
+        this.safety(drop);
+    }
+
     if (got_one) {
         soundEffect("tile");
         for (let i = 0; i < drop.list.length; i++) {
@@ -522,6 +574,11 @@ class GameScreen extends PIXI.Container {
                 if (tile.c_x == block.c_x && tile.c_y == block.c_y) {
                     tile.status = "dead";
                     tile.visible = false;
+
+                    if (tile.type == "warp") {
+                        tile.link.status = "dead";
+                        tile.link.visible = false;
+                    }
                 }
             }
         }
@@ -872,7 +929,12 @@ class GameScreen extends PIXI.Container {
         let new_tiles = [];
         for (let k = 0; k < this.tiles.length; k++) {
             let tile = this.tiles[k];
-            if (game.timeSince(tile.start) > 225.55 * 48) tile.status = "dead";
+            if (game.timeSince(tile.start) > 225.55 * 48) {
+                tile.status = "dead";
+                if (tile.type == "warp") {
+                    tile.link.status = "dead";
+                }
+            }
             if (tile.status == "alive") {
                 new_tiles.push(tile);
             } else {
