@@ -4,7 +4,8 @@ let sound_volume = 0.4;
 let current_music = null;
 
 let sound_files = [
-  ["music_1", "Steve_Oxen_Partying_In_Russia.mp3"],
+  ["lobby_music", "Steve_Oxen_Rio_After_Dark.mp3"],
+  ["game_music", "Steve_Oxen_Partying_In_Russia.mp3"],
   ["move", "move.wav"],
   ["place", "place.wav"],
   ["rotate", "rotate.wav"],

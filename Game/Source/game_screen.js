@@ -64,7 +64,7 @@ class GameScreen extends PIXI.Container {
   startPlay() {
     let self = this;
 
-    setMusic("music_1");
+    setMusic("game_music");
     if (current_music != null) {
         current_music.on('end', function(){
             console.log("HEY THIS IS SUPPOSED TO END THE TIME");
@@ -488,6 +488,8 @@ class GameScreen extends PIXI.Container {
             let block = drop.list[i];
             flicker(block, 225, block.tint, 0xFFFFFF);
         }
+
+        this.checkTiles(drop);
     }
   }
 
@@ -667,6 +669,7 @@ class GameScreen extends PIXI.Container {
     }
     drop.c_x -= 1;
     this.setPosition(drop.dot, drop.c_x, drop.c_y);
+    this.checkTiles(drop);
   }
 
 
@@ -686,6 +689,7 @@ class GameScreen extends PIXI.Container {
     }
     drop.c_x += 1;
     this.setPosition(drop.dot, drop.c_x, drop.c_y);
+    this.checkTiles(drop);
   }
 
   
@@ -698,6 +702,7 @@ class GameScreen extends PIXI.Container {
         this.setPosition(block, drop.c_x + r_y, drop.c_y - r_x);
     }
     this.safety(drop);
+    this.checkTiles(drop);
   }
 
   safety(drop) {
