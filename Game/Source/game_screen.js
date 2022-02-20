@@ -495,6 +495,7 @@ class GameScreen extends PIXI.Container {
 
 
   checkDrop(drop) {
+    let self = this;
     let done = false;
     let dead = false;
 
@@ -578,8 +579,11 @@ class GameScreen extends PIXI.Container {
         }
 
         delay(function() {
-            game.screens["title"].initializeScreen();
-            game.switchScreens("game", "title", -1, 0);
+            console.log(self.score);
+            game.last_score = self.score;
+            console.log(game.last_score);
+            game.screens["score"].startScreen();
+            game.switchScreens("game", "score", 1, 0);
         }, 2000);
     }
   }

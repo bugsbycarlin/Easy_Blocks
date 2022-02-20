@@ -77,15 +77,23 @@ class TitleScreen extends PIXI.Container {
     if (mu != null && mu.uid != null) {
       game.auth_user = mu;
       game.network.uid = mu.uid;
+      game.network.loadHighScores(function() {
+          let hs_text = "High Scores\n";
+          for (const [key, value] of Object.entries(game.high_scores)) {
+            hs_text += value.name + ": " + value.score + "\n";
+          }
+          let hs_textbox = new PIXI.Text(hs_text, 
+            {fontFamily: default_font, fontSize: 25, fill: 0xFFFFFF, letterSpacing: 5, align: "left"});
+          hs_textbox.position.set(game.width / 2 - 100, game.height - 520);
+          hs_textbox.anchor.set(0, 0);
+          self.maskContainer.addChild(hs_textbox);
+        });
     }
     if (game.network.uid == null) {
       game.network.anonymousSignIn(function() {
         game.network.loadHighScores(function() {
-          console.log(game.high_scores);
           let hs_text = "High Scores\n";
           for (const [key, value] of Object.entries(game.high_scores)) {
-            console.log(key);
-            console.log(value);
             hs_text += value.name + ": " + value.score + "\n";
           }
           let hs_textbox = new PIXI.Text(hs_text, 

@@ -167,6 +167,7 @@ class Game {
     this.network = new Network(this);
     this.high_scores = {};
     this.auth_user = null;
+    this.last_score = 0;
 
     // Set up rendering and tweening loop
     let ticker = PIXI.Ticker.shared;
