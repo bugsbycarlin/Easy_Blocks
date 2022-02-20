@@ -1,5 +1,5 @@
 {
-  "name": "Easy Blocks",
+  "name": "EasyBlocks",
   "version": "0.1.0",
   "description": "game",
   "main": "Source/main.js",
@@ -11,6 +11,7 @@
   "author": "AlphaZoo",
   "license": "MIT",
   "devDependencies": {
+    "dotenv": "^16.0.0",
     "electron": "15.0.0",
     "electron-builder": "^22.11.7",
     "electron-notarize": "^1.1.1",
@@ -20,19 +21,26 @@
     "electron-settings": "^4.0.2"
   },
   "build": {
-    "appId": "com.electron.alphazoo",
-    "productName": "Easy Blocks",
+    "appId": "com.electron.easyblocks",
+    "productName": "EasyBlocks",
     "copyright": "Copyright 2022 AlphaZoo LLC",
     "afterSign": "Source/notarize.js",
     "directories": {
-      "output": "../Release/Easy Blocks ${version}/"
+      "output": "../Release/EasyBlocks${version}/"
     },
     "dmg": {
+      "background": "Icons/dmg_background.png",
       "sign": false,
       "contents": [
         {
-          "x": 320,
-          "y": 240
+          "x": 68,
+          "y": 216
+        },
+        {
+          "x": 210,
+          "y": 90,
+          "type": "link",
+          "path": "/Applications"
         }
       ]
     },
